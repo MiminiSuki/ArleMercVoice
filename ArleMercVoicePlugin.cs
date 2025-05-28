@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using BaseVoiceoverLib;
 using BepInEx;
 using BepInEx.Bootstrap;
@@ -65,18 +62,33 @@ namespace ArleMercVoice
                 }
                 if (!enableVoicelines.Value)
                 {
+                    //System.Console.WriteLine("ArleMerc: voicelines OFF");
                     DisableSound();
                 }
                 else
                 {
+                    //System.Console.WriteLine("ArleMerc: voicelines ON");
                     EnableSound();
+                }
+                if (jpVoicelines.Value)
+                {
+                    //System.Console.WriteLine("ArleMerc: voicelines are JP");
+                    DefineJPVO();
+                }
+                else
+                {
+                    //System.Console.WriteLine("ArleMerc: voicelines are ENG");
+                    DefineVO();
                 }
             }
         }
 
         public static ConfigEntry<bool> enableVoicelines;
+        public static ConfigEntry<bool> jpVoicelines;
         public static SurvivorDef survivorDef = Addressables.LoadAssetAsync<SurvivorDef>("RoR2/Base/Merc/Merc.asset").WaitForCompletion();
         public static List<NSEInfo> nseList = new List<NSEInfo>();
+
+        private static string voArleMercLobby = null;
         public void Awake()
         {
             Files.PluginInfo = ((BaseUnityPlugin)this).Info;
@@ -88,13 +100,15 @@ namespace ArleMercVoice
             //create settings and them create those settings in riskofoptions as well
             //you can add an assetbundle to this to have and icon for the mod in riskofoptions menu, but im lazy and didnt do that
             enableVoicelines = ((BaseUnityPlugin)this).Config.Bind<bool>(new ConfigDefinition("Settings", "Enable Voicelines"), true, new ConfigDescription("Enable voicelines when using the Arlecchino Mercenary Skin.", (AcceptableValueBase)null, Array.Empty<object>()));
-            enableVoicelines.SettingChanged += EnableVoicelines_SettingChanged;
+            enableVoicelines.SettingChanged += Voicelines_SettingChanged;
+            jpVoicelines = ((BaseUnityPlugin)this).Config.Bind<bool>(new ConfigDefinition("Settings", "Use JP Voicelines"), false, new ConfigDescription("Switches to the Japonese voicelines when using the Arlecchino Mercenary Skin.", (AcceptableValueBase)null, Array.Empty<object>()));
+            jpVoicelines.SettingChanged += Voicelines_SettingChanged;
             if (Chainloader.PluginInfos.ContainsKey("com.rune580.riskofoptions"))
             {
                 RiskOfOptionsCompat();
             }
         }
-        private void EnableVoicelines_SettingChanged(object sender, EventArgs e)
+        private void Voicelines_SettingChanged(object sender, EventArgs e)
         {
             RefreshNSE();
         }
@@ -102,6 +116,7 @@ namespace ArleMercVoice
         {
             //you can add an assetbundle to this to have and icon for the mod in riskofoptions menu, but im lazy and didnt do that
             ModSettingsManager.AddOption((BaseOption)new CheckBoxOption(enableVoicelines));
+            ModSettingsManager.AddOption((BaseOption)new CheckBoxOption(jpVoicelines));
         }
         private void OnLoad()
         {
@@ -137,32 +152,50 @@ namespace ArleMercVoice
             }
             else
             {
-                Util.PlaySound("Play_ArleMerc_Lobby", mannequinObject);
+                Util.PlaySound(voArleMercLobby, mannequinObject);
             }
         }
         private void InitNSE()
         {
-            //some sounds need to be networked, so we need to register them first before actually using them
-            //do it here so it does it every time you boot up the game and change the config(because of EnableVoicelines_SettingChanged and RefreshNSE)
-            ArleMercVoiceComponents.nseArleMercPrimary = RegisterNSE("Play_ArleMerc_Primary");
-            ArleMercVoiceComponents.nseArleMercSecondary = RegisterNSE("Play_ArleMerc_Secondary");
+            #region Register ENG NSEs
+            ArleMercVoiceComponents.nseArleMercPrimaryENG = RegisterNSE("Play_ArleMerc_Primary");
+            ArleMercVoiceComponents.nseArleMercSecondaryENG = RegisterNSE("Play_ArleMerc_Secondary");
 
-            ArleMercVoiceComponents.nseUtility1 = RegisterNSE("Play_ArleMerc_Skill1");
-            ArleMercVoiceComponents.nseUtility2 = RegisterNSE("Play_ArleMerc_Skill2");
-            ArleMercVoiceComponents.nseUtility3 = RegisterNSE("Play_ArleMerc_Skill3");
+            ArleMercVoiceComponents.nseArleMercUtility1ENG = RegisterNSE("Play_ArleMerc_Skill1");
+            ArleMercVoiceComponents.nseArleMercUtility2ENG = RegisterNSE("Play_ArleMerc_Skill2");
+            ArleMercVoiceComponents.nseArleMercUtility3ENG = RegisterNSE("Play_ArleMerc_Skill3");
 
-            ArleMercVoiceComponents.nseSpecial1 = RegisterNSE("Play_ArleMerc_Burst1");
-            ArleMercVoiceComponents.nseSpecial2 = RegisterNSE("Play_ArleMerc_Burst2");
-            ArleMercVoiceComponents.nseSpecial3 = RegisterNSE("Play_ArleMerc_Burst3");
+            ArleMercVoiceComponents.nseArleMercSpecial1ENG = RegisterNSE("Play_ArleMerc_Burst1");
+            ArleMercVoiceComponents.nseArleMercSpecial2ENG = RegisterNSE("Play_ArleMerc_Burst2");
+            ArleMercVoiceComponents.nseArleMercSpecial3ENG = RegisterNSE("Play_ArleMerc_Burst3");
 
-            ArleMercVoiceComponents.nseChest1 = RegisterNSE("Play_ArleMerc_Chest1");
-            ArleMercVoiceComponents.nseChest2 = RegisterNSE("Play_ArleMerc_Chest2");
-            ArleMercVoiceComponents.nseChest3 = RegisterNSE("Play_ArleMerc_Chest3");
+            ArleMercVoiceComponents.nseArleMercChest1ENG = RegisterNSE("Play_ArleMerc_Chest1");
+            ArleMercVoiceComponents.nseArleMercChest2ENG = RegisterNSE("Play_ArleMerc_Chest2");
+            ArleMercVoiceComponents.nseArleMercChest3ENG = RegisterNSE("Play_ArleMerc_Chest3");
+            #endregion
+
+            #region Register JP NSEs
+            ArleMercVoiceComponents.nseArleMercPrimaryJP = RegisterNSE("Play_ArleMerc_Primary_JP");
+            ArleMercVoiceComponents.nseArleMercSecondaryJP = RegisterNSE("Play_ArleMerc_Secondary_JP");
+
+            ArleMercVoiceComponents.nseArleMercUtility1JP = RegisterNSE("Play_ArleMerc_Skill1_JP");
+            ArleMercVoiceComponents.nseArleMercUtility2JP = RegisterNSE("Play_ArleMerc_Skill2_JP");
+            ArleMercVoiceComponents.nseArleMercUtility3JP = RegisterNSE("Play_ArleMerc_Skill3_JP");
+
+            ArleMercVoiceComponents.nseArleMercSpecial1JP = RegisterNSE("Play_ArleMerc_Burst1_JP");
+            ArleMercVoiceComponents.nseArleMercSpecial2JP = RegisterNSE("Play_ArleMerc_Burst2_JP");
+            ArleMercVoiceComponents.nseArleMercSpecial3JP = RegisterNSE("Play_ArleMerc_Burst3_JP");
+
+            ArleMercVoiceComponents.nseArleMercChest1JP = RegisterNSE("Play_ArleMerc_Chest1_JP");
+            ArleMercVoiceComponents.nseArleMercChest2JP = RegisterNSE("Play_ArleMerc_Chest2_JP");
+            ArleMercVoiceComponents.nseArleMercChest3JP = RegisterNSE("Play_ArleMerc_Chest3_JP");
+            #endregion
         }
         public void RefreshNSE()
         {
             foreach (NSEInfo nse in nseList)
             {
+                //System.Console.WriteLine("ArleMerc: Validating Params...");
                 nse.ValidateParams();
             }
         }
@@ -174,7 +207,84 @@ namespace ArleMercVoice
             nseList.Add(new NSEInfo(networkSoundEventDef));
             return networkSoundEventDef;
         }
+        private static void DefineVO()
+        {
+            ArleMercVoiceComponents.nseArleMercPrimary = ArleMercVoiceComponents.nseArleMercPrimaryENG;
+            ArleMercVoiceComponents.nseArleMercSecondary = ArleMercVoiceComponents.nseArleMercSecondaryENG;
 
+            ArleMercVoiceComponents.nseArleMercUtility1 = ArleMercVoiceComponents.nseArleMercUtility1ENG;
+            ArleMercVoiceComponents.nseArleMercUtility2 = ArleMercVoiceComponents.nseArleMercUtility2ENG;
+            ArleMercVoiceComponents.nseArleMercUtility3 = ArleMercVoiceComponents.nseArleMercUtility3ENG;
+
+            ArleMercVoiceComponents.nseArleMercSpecial1 = ArleMercVoiceComponents.nseArleMercSpecial1ENG;
+            ArleMercVoiceComponents.nseArleMercSpecial2 = ArleMercVoiceComponents.nseArleMercSpecial2ENG;
+            ArleMercVoiceComponents.nseArleMercSpecial3 = ArleMercVoiceComponents.nseArleMercSpecial3ENG;
+
+            ArleMercVoiceComponents.nseArleMercChest1 = ArleMercVoiceComponents.nseArleMercChest1ENG;
+            ArleMercVoiceComponents.nseArleMercChest2 = ArleMercVoiceComponents.nseArleMercChest2ENG;
+            ArleMercVoiceComponents.nseArleMercChest3 = ArleMercVoiceComponents.nseArleMercChest3ENG;
+
+
+            ArleMercVoiceComponents.voArleMercFallen1 = "Play_ArleMerc_Fallen1";
+            ArleMercVoiceComponents.voArleMercFallen2 = "Play_ArleMerc_Fallen2";
+            ArleMercVoiceComponents.voArleMercFallen3 = "Play_ArleMerc_Fallen3";
+
+            ArleMercVoiceComponents.voArleMercAscention1 = "Play_ArleMerc_Ascention1";
+            ArleMercVoiceComponents.voArleMercAscention2 = "Play_ArleMerc_Ascention2";
+            ArleMercVoiceComponents.voArleMercAscention3 = "Play_ArleMerc_Ascention3";
+
+            ArleMercVoiceComponents.voArleMercHurt = "Play_ArleMerc_Hurt";
+            voArleMercLobby = "Play_ArleMerc_Lobby";
+
+            ArleMercVoiceComponents.voArleMercJoin1 = "Play_ArleMerc_Join1";
+            ArleMercVoiceComponents.voArleMercJoin2 = "Play_ArleMerc_Join2";
+
+            ArleMercVoiceComponents.voArleMercWeather1 = "Play_ArleMerc_Sun";
+            ArleMercVoiceComponents.voArleMercWeather2 = "Play_ArleMerc_Thunder";
+
+            ArleMercVoiceComponents.voArleMercLowHP1 = "Play_ArleMerc_LowHP1";
+            ArleMercVoiceComponents.voArleMercLowHP2 = "Play_ArleMerc_LowHP2";
+            ArleMercVoiceComponents.voArleMercLowHP3 = "Play_ArleMerc_LowHP3";
+        }
+        private static void DefineJPVO()
+        {
+            ArleMercVoiceComponents.nseArleMercPrimary = ArleMercVoiceComponents.nseArleMercPrimaryJP;
+            ArleMercVoiceComponents.nseArleMercSecondary = ArleMercVoiceComponents.nseArleMercSecondaryJP;
+
+            ArleMercVoiceComponents.nseArleMercUtility1 = ArleMercVoiceComponents.nseArleMercUtility1JP;
+            ArleMercVoiceComponents.nseArleMercUtility2 = ArleMercVoiceComponents.nseArleMercUtility2JP;
+            ArleMercVoiceComponents.nseArleMercUtility3 = ArleMercVoiceComponents.nseArleMercUtility3JP;
+
+            ArleMercVoiceComponents.nseArleMercSpecial1 = ArleMercVoiceComponents.nseArleMercSpecial1JP;
+            ArleMercVoiceComponents.nseArleMercSpecial2 = ArleMercVoiceComponents.nseArleMercSpecial2JP;
+            ArleMercVoiceComponents.nseArleMercSpecial3 = ArleMercVoiceComponents.nseArleMercSpecial3JP;
+
+            ArleMercVoiceComponents.nseArleMercChest1 = ArleMercVoiceComponents.nseArleMercChest1JP;
+            ArleMercVoiceComponents.nseArleMercChest2 = ArleMercVoiceComponents.nseArleMercChest2JP;
+            ArleMercVoiceComponents.nseArleMercChest3 = ArleMercVoiceComponents.nseArleMercChest3JP;
+
+
+            ArleMercVoiceComponents.voArleMercFallen1 = "Play_ArleMerc_Fallen1_JP";
+            ArleMercVoiceComponents.voArleMercFallen2 = "Play_ArleMerc_Fallen2_JP";
+            ArleMercVoiceComponents.voArleMercFallen3 = "Play_ArleMerc_Fallen3_JP";
+
+            ArleMercVoiceComponents.voArleMercAscention1 = "Play_ArleMerc_Ascention1_JP";
+            ArleMercVoiceComponents.voArleMercAscention2 = "Play_ArleMerc_Ascention2_JP";
+            ArleMercVoiceComponents.voArleMercAscention3 = "Play_ArleMerc_Ascention3_JP";
+
+            ArleMercVoiceComponents.voArleMercHurt = "Play_ArleMerc_Hurt_JP";
+            voArleMercLobby = "Play_ArleMerc_Lobby_JP";
+
+            ArleMercVoiceComponents.voArleMercJoin1 = "Play_ArleMerc_Join1_JP";
+            ArleMercVoiceComponents.voArleMercJoin2 = "Play_ArleMerc_Join2_JP";
+
+            ArleMercVoiceComponents.voArleMercWeather1 = "Play_ArleMerc_Sun_JP";
+            ArleMercVoiceComponents.voArleMercWeather2 = "Play_ArleMerc_Thunder_JP";
+
+            ArleMercVoiceComponents.voArleMercLowHP1 = "Play_ArleMerc_LowHP1_JP";
+            ArleMercVoiceComponents.voArleMercLowHP2 = "Play_ArleMerc_LowHP2_JP";
+            ArleMercVoiceComponents.voArleMercLowHP3 = "Play_ArleMerc_LowHP3_JP";
+        }
 
         //like there has to be a better way to this
         private static SkinDef[] FindSkinsForBody(BodyIndex bodyIndex)

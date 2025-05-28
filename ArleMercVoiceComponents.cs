@@ -2,8 +2,6 @@
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
-using AK.Wwise;
-using System.Runtime.CompilerServices;
 
 
 namespace ArleMercVoice
@@ -13,21 +11,72 @@ namespace ArleMercVoice
         //here is where we'll actually play our sounds
         //at the end of the BaseVoiceoverComponent class you can see the actions that can trigger voice lines
         //youre not limited to just those tho, you can try making new ones if you actually know what youre doing
-
+        #region Creating voice strings
         public static NetworkSoundEventDef nseArleMercPrimary;
         public static NetworkSoundEventDef nseArleMercSecondary;
 
-        public static NetworkSoundEventDef nseUtility1;
-        public static NetworkSoundEventDef nseUtility2;
-        public static NetworkSoundEventDef nseUtility3;
+        public static NetworkSoundEventDef nseArleMercUtility1;
+        public static NetworkSoundEventDef nseArleMercUtility2;
+        public static NetworkSoundEventDef nseArleMercUtility3;
 
-        public static NetworkSoundEventDef nseSpecial1;
-        public static NetworkSoundEventDef nseSpecial2;
-        public static NetworkSoundEventDef nseSpecial3;
+        public static NetworkSoundEventDef nseArleMercSpecial1;
+        public static NetworkSoundEventDef nseArleMercSpecial2;
+        public static NetworkSoundEventDef nseArleMercSpecial3;
 
-        public static NetworkSoundEventDef nseChest1;
-        public static NetworkSoundEventDef nseChest2;
-        public static NetworkSoundEventDef nseChest3;
+        public static NetworkSoundEventDef nseArleMercChest1;
+        public static NetworkSoundEventDef nseArleMercChest2;
+        public static NetworkSoundEventDef nseArleMercChest3;
+
+        public static NetworkSoundEventDef nseArleMercPrimaryENG;
+        public static NetworkSoundEventDef nseArleMercSecondaryENG;
+
+        public static NetworkSoundEventDef nseArleMercUtility1ENG;
+        public static NetworkSoundEventDef nseArleMercUtility2ENG;
+        public static NetworkSoundEventDef nseArleMercUtility3ENG;
+
+        public static NetworkSoundEventDef nseArleMercSpecial1ENG;
+        public static NetworkSoundEventDef nseArleMercSpecial2ENG;
+        public static NetworkSoundEventDef nseArleMercSpecial3ENG;
+
+        public static NetworkSoundEventDef nseArleMercChest1ENG;
+        public static NetworkSoundEventDef nseArleMercChest2ENG;
+        public static NetworkSoundEventDef nseArleMercChest3ENG;
+
+        public static NetworkSoundEventDef nseArleMercPrimaryJP;
+        public static NetworkSoundEventDef nseArleMercSecondaryJP;
+
+        public static NetworkSoundEventDef nseArleMercUtility1JP;
+        public static NetworkSoundEventDef nseArleMercUtility2JP;
+        public static NetworkSoundEventDef nseArleMercUtility3JP;
+
+        public static NetworkSoundEventDef nseArleMercSpecial1JP;
+        public static NetworkSoundEventDef nseArleMercSpecial2JP;
+        public static NetworkSoundEventDef nseArleMercSpecial3JP;
+
+        public static NetworkSoundEventDef nseArleMercChest1JP;
+        public static NetworkSoundEventDef nseArleMercChest2JP;
+        public static NetworkSoundEventDef nseArleMercChest3JP;
+
+        public static string voArleMercFallen1;
+        public static string voArleMercFallen2;
+        public static string voArleMercFallen3;
+
+        public static string voArleMercAscention1;
+        public static string voArleMercAscention2;
+        public static string voArleMercAscention3;
+
+        public static string voArleMercHurt;
+
+        public static string voArleMercJoin1;
+        public static string voArleMercJoin2;
+
+        public static string voArleMercWeather1;
+        public static string voArleMercWeather2;
+
+        public static string voArleMercLowHP1;
+        public static string voArleMercLowHP2;
+        public static string voArleMercLowHP3;
+        #endregion
 
         //these cooldowns are made so we can apply cooldowns for specific actions or situations
         //the cooldown field in TryPlayNetworkSound and TryPlaySound are global cooldowns that all other sounds played with those will respect*
@@ -88,100 +137,100 @@ namespace ArleMercVoice
         {
             if (Util.CheckRoll(33.333332f))
             {
-                TryPlayNetworkSound(nseUtility1, 0.9f, false);
+                TryPlayNetworkSound(nseArleMercUtility1, 0.9f, false);
             }
             else if (Util.CheckRoll(50f))
             {
-                TryPlayNetworkSound(nseUtility2, 0.8f, false);
+                TryPlayNetworkSound(nseArleMercUtility2, 0.8f, false);
             }
             else
             {
-                TryPlayNetworkSound(nseUtility3, 0.8f, false);
+                TryPlayNetworkSound(nseArleMercUtility3, 0.8f, false);
             }
         }
         public override void PlaySpecialAuthority(GenericSkill skill)
         {
             if (Util.CheckRoll(33.333332f))
             {
-                TryPlayNetworkSound(nseSpecial1, 2.1f, false);
+                TryPlayNetworkSound(nseArleMercSpecial1, 2.1f, false);
             }
             else if (Util.CheckRoll(50f))
             {
-                TryPlayNetworkSound(nseSpecial2, 2f, false);
+                TryPlayNetworkSound(nseArleMercSpecial2, 2f, false);
             }
             else
             {
-                TryPlayNetworkSound(nseSpecial3, 1.7f, false);
+                TryPlayNetworkSound(nseArleMercSpecial3, 1.7f, false);
             }
         }
         public override void PlayDeath()
         {
             if (Util.CheckRoll(33.333332f))
             {
-                TryPlaySound("Play_ArleMerc_Fallen1", 4f, true);
+                TryPlaySound(voArleMercFallen1, 4f, true);
             }
             else if (Util.CheckRoll(50f))
             {
-                TryPlaySound("Play_ArleMerc_Fallen2", 3.2f, true);
+                TryPlaySound(voArleMercFallen2, 3.2f, true);
             }
             else
             {
-                TryPlaySound("Play_ArleMerc_Fallen3", 4f, true);
+                TryPlaySound(voArleMercFallen3, 4f, true);
             }
         }
         public override void PlayLevelUp()
         {
             if (Util.CheckRoll(33.333332f))
             {
-                TryPlaySound("Play_ArleMerc_Ascention1", 4.9f, false);
+                TryPlaySound(voArleMercAscention1, 4.9f, false);
             }
             else if (Util.CheckRoll(50f))
             {
-                TryPlaySound("Play_ArleMerc_Ascention2", 8.2f, false);
+                TryPlaySound(voArleMercAscention2, 8.2f, false);
             }
             else
             {
-                TryPlaySound("Play_ArleMerc_Ascention3", 7.1f, false);
+                TryPlaySound(voArleMercAscention3, 7.1f, false);
             }
         }
         public override void PlayHurt(float percentHPLost)
         {
             if (percentHPLost >= 0.1f)
             {
-                TryPlaySound("Play_ArleMerc_Hurt", 0f, false);
+                TryPlaySound(voArleMercHurt, 0f, false);
             }
         }
         public override void PlayTeleporterStart()
         {
             if (Util.CheckRoll(50f))
             {
-                TryPlaySound("Play_ArleMerc_Join1", 3f, false);
+                TryPlaySound(voArleMercJoin1, 3f, false);
             }
             else
             {
-                TryPlaySound("Play_ArleMerc_Join2", 2.9f, false);
+                TryPlaySound(voArleMercJoin2, 2.9f, false);
             }
         }
         public override void PlayTeleporterFinish()
         {
             if (Util.CheckRoll(50f))
             {
-                TryPlaySound("Play_ArleMerc_Sun", 4.2f, false);
+                TryPlaySound(voArleMercWeather1, 4.2f, false);
             }
             else
             {
-                TryPlaySound("Play_ArleMerc_Thunder", 5f, false);
+                TryPlaySound(voArleMercWeather2, 5f, false);
             }
         }
         public override void PlayVictory()
         {
             if (Util.CheckRoll(50f))
             {
-                TryPlaySound("Play_ArleMerc_Sun", 4.2f, true);
+                TryPlaySound(voArleMercWeather1, 4.2f, true);
             }
             else
             {
-                TryPlaySound("Play_ArleMerc_Thunder", 5f, true);
+                TryPlaySound(voArleMercWeather2, 5f, true);
             }
         }
         public override void PlayLowHealth()
@@ -190,15 +239,15 @@ namespace ArleMercVoice
             {
                 if (Util.CheckRoll(33.333332f))
                 {
-                    TryPlaySound("Play_ArleMerc_LowHP1", 2f, false);
+                    TryPlaySound(voArleMercLowHP1, 2f, false);
                 }
                 else if (Util.CheckRoll(50f))
                 {
-                    TryPlaySound("Play_ArleMerc_LowHP2", 2.2f, false);
+                    TryPlaySound(voArleMercLowHP2, 2.2f, false);
                 }
                 else
                 {
-                    TryPlaySound("Play_ArleMerc_LowHP3", 2.7f, false);
+                    TryPlaySound(voArleMercLowHP3, 2.7f, false);
                 }
                 lowHealthCooldown = 40f;
             }
@@ -214,15 +263,15 @@ namespace ArleMercVoice
             {
                 if (Util.CheckRoll(33.333332f))
                 {
-                    TryPlayNetworkSound(nseChest1, 3f, false);
+                    TryPlayNetworkSound(nseArleMercChest1, 3f, false);
                 }
                 else if (Util.CheckRoll(50f))
                 {
-                    TryPlayNetworkSound(nseChest2, 1.5f, false);
+                    TryPlayNetworkSound(nseArleMercChest2, 1.5f, false);
                 }
                 else
                 {
-                    TryPlayNetworkSound(nseChest3, 3.6f, false);
+                    TryPlayNetworkSound(nseArleMercChest3, 3.6f, false);
                 }
                 itemGetCooldown = 40f;
             }
