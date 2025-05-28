@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FB7085BA-7967-409F-8FF6-392024ECD2E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ArleMercVoice</RootNamespace>
+    <AssemblyName>ArleMercVoice</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>E:\r2modmanProfiles\RiskOfRain2\profiles\Vanguard Pack\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Ak.Wwise.Api.WAAPI">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Ak.Wwise.Api.WAAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="AK.Wwise.Unity.API">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\AK.Wwise.Unity.API.dll</HintPath>
+    </Reference>
+    <Reference Include="AK.Wwise.Unity.API.WwiseTypes">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\AK.Wwise.Unity.API.WwiseTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="AK.Wwise.Unity.MonoBehaviour">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\AK.Wwise.Unity.MonoBehaviour.dll</HintPath>
+    </Reference>
+    <Reference Include="AK.Wwise.Unity.Timeline">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\AK.Wwise.Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="ArlecchinoMercenary">
+      <HintPath>.\ArlecchinoMercenary.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BaseVoiceoverLib">
+      <HintPath>..\..\..\..\bam\Dependencies\API\BaseVoiceoverLib.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>E:\r2modmanProfiles\RiskOfRain2\profiles\Vanguard Pack\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.multiplayer-hlapi.Runtime">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Decalicious">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Decalicious.dll</HintPath>
+    </Reference>
+    <Reference Include="EOS">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\EOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Facepunch.Steamworks">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Facepunch.Steamworks.dll</HintPath>
+    </Reference>
+    <Reference Include="GenericIK">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\GenericIK.dll</HintPath>
+    </Reference>
+    <Reference Include="Grumpy">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Grumpy.dll</HintPath>
+    </Reference>
+    <Reference Include="HGCSharpUtils">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\HGCSharpUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="HGSignup">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\HGSignup.dll</HintPath>
+    </Reference>
+    <Reference Include="HGUnityUtils">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\HGUnityUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="KinematicCharacterController">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\KinematicCharacterController.dll</HintPath>
+    </Reference>
+    <Reference Include="LegacyResourcesAPI">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\LegacyResourcesAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_Assembly-CSharp">
+      <HintPath>..\..\..\..\bam\Dependencies\API\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ModLoader">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\ModLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>E:\SteamLibrary\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\bam\Dependencies\API\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Addressables">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.ArtifactCode">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.ArtifactCode.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.CommandHelper">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.CommandHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.ContentManagement">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.ContentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Core">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.DamageType">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.DamageType.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.DamageType.Interop">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.DamageType.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Deployable">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Deployable.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Difficulty">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Difficulty.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Director">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Director.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Dot">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Dot.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Elites">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Elites.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Items">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Items.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Language">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Language.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Loadout">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Loadout.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.LobbyConfig">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.LobbyConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Networking">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Orb">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Orb.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Prefab">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Prefab.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.RecalculateStats">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.RecalculateStats.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.SceneAsset">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.SceneAsset.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Skills">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Skills.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Skills.Interop">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Skills.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Skins">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Skins.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Sound">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Sound.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.TempVisualEffect">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.TempVisualEffect.dll</HintPath>
+    </Reference>
+    <Reference Include="R2API.Unlockable">
+      <HintPath>..\..\..\..\bam\Dependencies\API\R2API.Unlockable.dll</HintPath>
+    </Reference>
+    <Reference Include="RiskOfOptions">
+      <HintPath>..\..\..\..\bam\Dependencies\API\RiskOfOptions.dll</HintPath>
+    </Reference>
+    <Reference Include="RoR2">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\RoR2.dll</HintPath>
+    </Reference>
+    <Reference Include="RoR2BepInExPack">
+      <HintPath>..\..\..\..\bam\Dependencies\API\RoR2BepInExPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Addressables">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\Unity.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\bam\Dependencies\Game\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArleMercVoiceComponents.cs" />
+    <Compile Include="ArleMercVoiceModules\Files.cs" />
+    <Compile Include="ArleMercVoiceModules\Soundbanks.cs" />
+    <Compile Include="ArleMercVoiceModules\Content.cs" />
+    <Compile Include="ArleMercVoicePlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 e x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
