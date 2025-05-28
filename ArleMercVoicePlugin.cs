@@ -25,6 +25,7 @@ namespace ArleMercVoice
     [BepInPlugin("com.miminisusuki.ArleMercVoice", "ArleMercVoice", "1.0.0")]
     public class ArleMercVoicePlugin : BaseUnityPlugin
     {
+        //honestly most of this code is stolen from the HiyoriMerc and SaoriBandit skin mods by VanillaVitamins
         public class NSEInfo
         {
             public NetworkSoundEventDef nse;
@@ -83,6 +84,9 @@ namespace ArleMercVoice
             new Content().Initialize();
             SoundBanks.Init();
             InitNSE();
+
+            //create settings and them create those settings in riskofoptions as well
+            //you can add an assetbundle to this to have and icon for the mod in riskofoptions menu, but im lazy and didnt do that
             enableVoicelines = ((BaseUnityPlugin)this).Config.Bind<bool>(new ConfigDefinition("Settings", "Enable Voicelines"), true, new ConfigDescription("Enable voicelines when using the Arlecchino Mercenary Skin.", (AcceptableValueBase)null, Array.Empty<object>()));
             enableVoicelines.SettingChanged += EnableVoicelines_SettingChanged;
             if (Chainloader.PluginInfos.ContainsKey("com.rune580.riskofoptions"))
@@ -96,10 +100,12 @@ namespace ArleMercVoice
         }
         private void RiskOfOptionsCompat()
         {
+            //you can add an assetbundle to this to have and icon for the mod in riskofoptions menu, but im lazy and didnt do that
             ModSettingsManager.AddOption((BaseOption)new CheckBoxOption(enableVoicelines));
         }
         private void OnLoad()
         {
+            //this part sounds like a crime but it works so yknow
             SkinDef skinDef = null;
             SkinDef[] array = ArrayUtils.Clone(FindSkinsForBody(BodyCatalog.FindBodyIndex("MercBody")));
             //SkinDef[] array = FindSkinsForBody(BodyCatalog.FindBodyIndex("MercBody")));
@@ -117,26 +123,11 @@ namespace ArleMercVoice
             }
             else
             {
+                //the voiceoverInfo is what attaches the components.cs to the characters, and in there we'll tell the game what sounds to play and when
                 VoiceoverInfo val = new VoiceoverInfo(typeof(ArleMercVoiceComponents), skinDef, "MercBody");
                 val.selectActions = (LobbySelectActions)Delegate.Combine((Delegate)(object)val.selectActions, (Delegate)new LobbySelectActions(ArleSelect));
             }
             RefreshNSE();
-        }
-        private static SkinDef[] FindSkinsForBody(BodyIndex bodyIndex)
-        {
-            ModelLocator component = BodyCatalog.GetBodyPrefab(bodyIndex).GetComponent<ModelLocator>();
-            if (!component || !component.modelTransform)
-            {
-                return Array.Empty<SkinDef>();
-            }
-
-            ModelSkinController component2 = component.modelTransform.GetComponent<ModelSkinController>();
-            if (!component2)
-            {
-                return Array.Empty<SkinDef>();
-            }
-
-            return component2.skins;
         }
         private void ArleSelect(GameObject mannequinObject)
         {
@@ -151,6 +142,8 @@ namespace ArleMercVoice
         }
         private void InitNSE()
         {
+            //some sounds need to be networked, so we need to register them first before actually using them
+            //do it here so it does it every time you boot up the game and change the config(because of EnableVoicelines_SettingChanged and RefreshNSE)
             ArleMercVoiceComponents.nseArleMercPrimary = RegisterNSE("Play_ArleMerc_Primary");
             ArleMercVoiceComponents.nseArleMercSecondary = RegisterNSE("Play_ArleMerc_Secondary");
 
@@ -180,6 +173,25 @@ namespace ArleMercVoice
             Content.networkSoundEventDefs.Add(networkSoundEventDef);
             nseList.Add(new NSEInfo(networkSoundEventDef));
             return networkSoundEventDef;
+        }
+
+
+        //like there has to be a better way to this
+        private static SkinDef[] FindSkinsForBody(BodyIndex bodyIndex)
+        {
+            ModelLocator component = BodyCatalog.GetBodyPrefab(bodyIndex).GetComponent<ModelLocator>();
+            if (!component || !component.modelTransform)
+            {
+                return Array.Empty<SkinDef>();
+            }
+
+            ModelSkinController component2 = component.modelTransform.GetComponent<ModelSkinController>();
+            if (!component2)
+            {
+                return Array.Empty<SkinDef>();
+            }
+
+            return component2.skins;
         }
     }
 }

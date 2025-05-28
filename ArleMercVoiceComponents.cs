@@ -3,12 +3,17 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using AK.Wwise;
+using System.Runtime.CompilerServices;
 
 
 namespace ArleMercVoice
 {
     public class ArleMercVoiceComponents : BaseVoiceoverComponent
     {
+        //here is where we'll actually play our sounds
+        //at the end of the BaseVoiceoverComponent class you can see the actions that can trigger voice lines
+        //youre not limited to just those tho, you can try making new ones if you actually know what youre doing
+
         public static NetworkSoundEventDef nseArleMercPrimary;
         public static NetworkSoundEventDef nseArleMercSecondary;
 
@@ -24,10 +29,22 @@ namespace ArleMercVoice
         public static NetworkSoundEventDef nseChest2;
         public static NetworkSoundEventDef nseChest3;
 
+        //these cooldowns are made so we can apply cooldowns for specific actions or situations
+        //the cooldown field in TryPlayNetworkSound and TryPlaySound are global cooldowns that all other sounds played with those will respect*
+        //*except the ones marked with forcePlay, like the death ones
         private float lowHealthCooldown = 0f;
         private float secondaryCooldown = 0f;
         private float itemGetCooldown = 0f;
 
+        //if you look at the code, a bunch of times its used Util.CheckRoll
+        //i separated most voicelines in sound events by themselves and im rolling to have them play randomly
+        //this seems pointless because you can make sound events in wwise have random chances, so why do it in code?
+        //this is because of the global cooldown of TryPlayNetworkSound and TryPlaySound
+        //This way we can set the cooldown duration to the duration of that sound, so we dont have overlaps
+        //in places where i dont use CheckRoll, i made random sound events in wwise, because i dont care if those overlap
+        // /\ with the exception of the m1, i just made that random sound event have a random chance of playing at all
+        //if youre going to put voicelines in the m1, i recommend you do something similar(like a primaryCooldown or something)
+        //not doing it leads to a lot of moaning, and not everyone likes that
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
@@ -190,7 +207,6 @@ namespace ArleMercVoice
         {
             base.Inventory_onItemAddedClient(itemIndex);
             PlayItemGet();
-
         }
         protected void PlayItemGet()
         {
