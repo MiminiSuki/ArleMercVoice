@@ -81,10 +81,14 @@ namespace ArleMercVoice
         //these cooldowns are made so we can apply cooldowns for specific actions or situations
         //the cooldown field in TryPlayNetworkSound and TryPlaySound are global cooldowns that all other sounds played with those will respect*
         //*except the ones marked with forcePlay, like the death ones
-        private float lowHealthCooldown = 0f;
         private float primaryCooldown = 0f;
         private float secondaryCooldown = 0f;
+        private float utilityCooldown = 0f;
+        private float specialCooldown = 0f;
         private float itemGetCooldown = 0f;
+        private float levelupCooldown = 0f;
+        private float lowHealthCooldown = 0f;
+        private float hurtCooldown = 0f;
 
         //if you look at the code, a bunch of times its used Util.CheckRoll
         //i separated most voicelines in sound events by themselves and im rolling to have them play randomly
@@ -98,10 +102,6 @@ namespace ArleMercVoice
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
-            if (lowHealthCooldown > 0f)
-            {
-                lowHealthCooldown -= Time.fixedDeltaTime;
-            }
             if (primaryCooldown > 0f)
             {
                 primaryCooldown -= Time.fixedDeltaTime;
@@ -110,9 +110,29 @@ namespace ArleMercVoice
             {
                 secondaryCooldown -= Time.fixedDeltaTime;
             }
+            if (utilityCooldown > 0f)
+            {
+                utilityCooldown -= Time.fixedDeltaTime;
+            }
+            if (specialCooldown > 0f)
+            {
+                specialCooldown -= Time.fixedDeltaTime;
+            }
             if (itemGetCooldown > 0f)
             {
                 itemGetCooldown -= Time.fixedDeltaTime;
+            }
+            if (levelupCooldown > 0f)
+            {
+                levelupCooldown -= Time.fixedDeltaTime;
+            }
+            if (lowHealthCooldown > 0f)
+            {
+                lowHealthCooldown -= Time.fixedDeltaTime;
+            }
+            if (hurtCooldown > 0f)
+            {
+                hurtCooldown -= Time.fixedDeltaTime;
             }
         }
         protected override void Start()
@@ -125,10 +145,10 @@ namespace ArleMercVoice
         }
         public override void PlayPrimaryAuthority(GenericSkill skill)
         {
-            if (Util.CheckRoll(60f) && !(primaryCooldown > 0f))
+            if (Util.CheckRoll(40f) && !(primaryCooldown > 0f))
             {
                 TryPlayNetworkSound(nseArleMercPrimary, 0f, false);
-                primaryCooldown = 0.8f;
+                primaryCooldown = 1.2f;
             }
         }
         public override void PlaySecondaryAuthority(GenericSkill skill)
@@ -136,37 +156,45 @@ namespace ArleMercVoice
             if (!(secondaryCooldown > 0f))
             {
                 TryPlayNetworkSound(nseArleMercSecondary, 0f, false);
-                secondaryCooldown = 1.7f;
+                secondaryCooldown = 2.2f;
             }
         }
         public override void PlayUtilityAuthority(GenericSkill skill)
         {
-            if (Util.CheckRoll(33.333332f))
+            if (!(utilityCooldown > 0f))
             {
-                TryPlayNetworkSound(nseArleMercUtility1, 0.9f, false);
-            }
-            else if (Util.CheckRoll(50f))
-            {
-                TryPlayNetworkSound(nseArleMercUtility2, 0.8f, false);
-            }
-            else
-            {
-                TryPlayNetworkSound(nseArleMercUtility3, 0.8f, false);
+                if (Util.CheckRoll(33.333332f))
+                {
+                    TryPlayNetworkSound(nseArleMercUtility1, 0.9f, false);
+                }
+                else if (Util.CheckRoll(50f))
+                {
+                    TryPlayNetworkSound(nseArleMercUtility2, 0.8f, false);
+                }
+                else
+                {
+                    TryPlayNetworkSound(nseArleMercUtility3, 0.8f, false);
+                }
+                utilityCooldown = 4f;
             }
         }
         public override void PlaySpecialAuthority(GenericSkill skill)
         {
-            if (Util.CheckRoll(33.333332f))
+            if (!(specialCooldown > 0f))
             {
-                TryPlayNetworkSound(nseArleMercSpecial1, 2.1f, false);
-            }
-            else if (Util.CheckRoll(50f))
-            {
-                TryPlayNetworkSound(nseArleMercSpecial2, 2f, false);
-            }
-            else
-            {
-                TryPlayNetworkSound(nseArleMercSpecial3, 1.7f, false);
+                if (Util.CheckRoll(33.333332f))
+                {
+                    TryPlayNetworkSound(nseArleMercSpecial1, 2.1f, false);
+                }
+                else if (Util.CheckRoll(50f))
+                {
+                    TryPlayNetworkSound(nseArleMercSpecial2, 2f, false);
+                }
+                else
+                {
+                    TryPlayNetworkSound(nseArleMercSpecial3, 1.7f, false);
+                }
+                specialCooldown = 6f;
             }
         }
         public override void PlayDeath()
@@ -186,24 +214,29 @@ namespace ArleMercVoice
         }
         public override void PlayLevelUp()
         {
-            if (Util.CheckRoll(33.333332f))
+            if (!(levelupCooldown > 0f))
             {
-                TryPlaySound(voArleMercAscention1, 4.9f, false);
-            }
-            else if (Util.CheckRoll(50f))
-            {
-                TryPlaySound(voArleMercAscention2, 8.2f, false);
-            }
-            else
-            {
-                TryPlaySound(voArleMercAscention3, 7.1f, false);
+                if (Util.CheckRoll(33.333332f))
+                {
+                    TryPlaySound(voArleMercAscention1, 4.9f, false);
+                }
+                else if (Util.CheckRoll(50f))
+                {
+                    TryPlaySound(voArleMercAscention2, 8.2f, false);
+                }
+                else
+                {
+                    TryPlaySound(voArleMercAscention3, 7.1f, false);
+                }
+                levelupCooldown = 60f;
             }
         }
         public override void PlayHurt(float percentHPLost)
         {
-            if (percentHPLost >= 0.1f)
+            if (percentHPLost >= 0.1f && !(hurtCooldown > 0f))
             {
                 TryPlaySound(voArleMercHurt, 0f, false);
+                hurtCooldown = 1.3f;
             }
         }
         public override void PlayTeleporterStart()
@@ -279,7 +312,7 @@ namespace ArleMercVoice
                 {
                     TryPlayNetworkSound(nseArleMercChest3, 3.6f, false);
                 }
-                itemGetCooldown = 40f;
+                itemGetCooldown = 80f;
             }
         }
         public override bool ComponentEnableVoicelines()

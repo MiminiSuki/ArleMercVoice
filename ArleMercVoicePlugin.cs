@@ -19,7 +19,7 @@ namespace ArleMercVoice
     [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.SoftDependency)]
 
     [R2API.Utils.NetworkCompatibility(R2API.Utils.CompatibilityLevel.EveryoneMustHaveMod, R2API.Utils.VersionStrictness.EveryoneNeedSameModVersion)]
-    [BepInPlugin("com.miminisusuki.ArleMercVoice", "ArleMercVoice", "1.0.0")]
+    [BepInPlugin("com.miminisusuki.ArleMercVoice", "ArleMercVoice", "1.0.2")]
     public class ArleMercVoicePlugin : BaseUnityPlugin
     {
         //honestly most of this code is stolen from the HiyoriMerc and SaoriBandit skin mods by VanillaVitamins
