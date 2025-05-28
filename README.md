@@ -13,3 +13,8 @@ this way, if you uninstall BaseVoiceoverLib(which all players need to have) the 
 by the way you should also go see the github for BaseVoiceoverLib by Moffein if you want to make a skin with voices: https://github.com/Moffein/BaseVoiceoverLib/tree/master
 
 theyre the GOAT that made all this voice shenanigans possible(or atleast much easier to do)
+
+
+if youre here to see how to change the color of the vfx of merc with WolfoQoL, literally just name the skindef of the skin you made with skin builder in unity to end with "Red" or "Green"
+
+the one for my skin is "ArleMercSkinRed" for example
