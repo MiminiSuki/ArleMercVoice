@@ -82,6 +82,7 @@ namespace ArleMercVoice
         //the cooldown field in TryPlayNetworkSound and TryPlaySound are global cooldowns that all other sounds played with those will respect*
         //*except the ones marked with forcePlay, like the death ones
         private float lowHealthCooldown = 0f;
+        private float primaryCooldown = 0f;
         private float secondaryCooldown = 0f;
         private float itemGetCooldown = 0f;
 
@@ -92,7 +93,7 @@ namespace ArleMercVoice
         //This way we can set the cooldown duration to the duration of that sound, so we dont have overlaps
         //in places where i dont use CheckRoll, i made random sound events in wwise, because i dont care if those overlap
         // /\ with the exception of the m1, i just made that random sound event have a random chance of playing at all
-        //if youre going to put voicelines in the m1, i recommend you do something similar(like a primaryCooldown or something)
+        //if youre going to put voicelines in the m1, i recommend you do something similar
         //not doing it leads to a lot of moaning, and not everyone likes that
         protected override void FixedUpdate()
         {
@@ -100,6 +101,10 @@ namespace ArleMercVoice
             if (lowHealthCooldown > 0f)
             {
                 lowHealthCooldown -= Time.fixedDeltaTime;
+            }
+            if (primaryCooldown > 0f)
+            {
+                primaryCooldown -= Time.fixedDeltaTime;
             }
             if (secondaryCooldown > 0f)
             {
@@ -120,9 +125,10 @@ namespace ArleMercVoice
         }
         public override void PlayPrimaryAuthority(GenericSkill skill)
         {
-            if (Util.CheckRoll(33.333332f))
+            if (Util.CheckRoll(60f) && !(primaryCooldown > 0f))
             {
                 TryPlayNetworkSound(nseArleMercPrimary, 0f, false);
+                primaryCooldown = 0.8f;
             }
         }
         public override void PlaySecondaryAuthority(GenericSkill skill)
